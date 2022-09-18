@@ -35,8 +35,12 @@ class MobRecon_DS(nn.Module):
         """
         super(MobRecon_DS, self).__init__()
         self.cfg = cfg
-        self.backbone = DenseStack_Backnone(latent_size=cfg.MODEL.LATENT_SIZE,
-                                            kpts_num=cfg.MODEL.KPTS_NUM)
+        if self.cfg.PHASE == 'test':
+            self.backbone = DenseStack_Backnone(latent_size=cfg.MODEL.LATENT_SIZE,
+                                                kpts_num=cfg.MODEL.KPTS_NUM, pretrain=False)
+        else:
+            self.backbone = DenseStack_Backnone(latent_size=cfg.MODEL.LATENT_SIZE,
+                                                kpts_num=cfg.MODEL.KPTS_NUM)
         cur_dir = os.path.dirname(os.path.realpath(__file__))
         template_fp = os.path.join(cur_dir, '../../template/template.ply')
         transform_fp = os.path.join(cur_dir, '../../template', 'transform.pkl')
